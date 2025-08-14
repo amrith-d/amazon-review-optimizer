@@ -1,16 +1,48 @@
 # Amazon Review Optimizer Configuration
 
-# Model Configuration
+# Model Configuration - OpenRouter API Pricing (2024)
 models:
-  lightweight:
-    name: "gpt-3.5-turbo"
-    cost_per_1k_tokens: 0.0015
+  ultra_lightweight:
+    name: "openai/gpt-4o-mini"
+    openrouter_name: "openai/gpt-4o-mini" 
+    cost_per_million_tokens: 0.15
     max_tokens: 150
+    use_case: "Simple sentiment analysis"
+  
+  lightweight:
+    name: "anthropic/claude-3-haiku"
+    openrouter_name: "anthropic/claude-3-haiku:beta"
+    cost_per_million_tokens: 0.25
+    max_tokens: 150
+    use_case: "Basic review analysis"
+  
+  medium:
+    name: "openai/gpt-3.5-turbo"
+    openrouter_name: "openai/gpt-3.5-turbo"
+    cost_per_million_tokens: 0.50
+    max_tokens: 200
+    use_case: "Standard analysis"
   
   advanced:
-    name: "gpt-4"
-    cost_per_1k_tokens: 0.03
-    max_tokens: 200
+    name: "openai/gpt-4o"
+    openrouter_name: "openai/gpt-4o"
+    cost_per_million_tokens: 2.50
+    max_tokens: 300
+    use_case: "Complex technical analysis"
+  
+  premium:
+    name: "anthropic/claude-3-sonnet"
+    openrouter_name: "anthropic/claude-3-sonnet:beta"
+    cost_per_million_tokens: 3.00
+    max_tokens: 300
+    use_case: "Deep domain expertise"
+  
+  enterprise:
+    name: "openai/gpt-4-turbo"
+    openrouter_name: "openai/gpt-4-turbo"
+    cost_per_million_tokens: 10.00
+    max_tokens: 500
+    use_case: "Baseline comparison only"
 
 # Routing Configuration
 routing:

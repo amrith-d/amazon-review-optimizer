@@ -1,0 +1,165 @@
+{
+  "metadata": {
+    "timestamp": "2025-08-14T15:17:13.632061",
+    "total_reviews": 1000,
+    "processing_time": 68.58125710487366
+  },
+  "summary": {
+    "total_reviews": 1000,
+    "total_time": 68.58125710487366,
+    "total_cost": 0.0038494999999999996,
+    "avg_cost_per_review": 3.849499999999999e-06,
+    "api_calls": 8,
+    "semantic_cache_hit_rate": 99.2,
+    "kv_cache_hit_rate": 62.5,
+    "model_distribution": {
+      "openai/gpt-4o-mini": 3,
+      "openai/gpt-4o": 3,
+      "openai/gpt-3.5-turbo": 1,
+      "anthropic/claude-3-haiku:beta": 1,
+      "semantic_cache": 992
+    },
+    "category_breakdown": {
+      "Books": {
+        "count": 377,
+        "cost": 0.0002065,
+        "semantic_hits": 374
+      },
+      "Home_and_Garden": {
+        "count": 251,
+        "cost": 0.0001955,
+        "semantic_hits": 249
+      },
+      "Electronics": {
+        "count": 372,
+        "cost": 0.0034475,
+        "semantic_hits": 369
+      }
+    },
+    "baseline_cost": 1.5000000000000002,
+    "savings_amount": 1.4961505000000002,
+    "savings_percentage": 99.74336666666666,
+    "budget_used": 0.07698999999999999
+  },
+  "linkedin_summary": "\ud83d\udcb0 WEEK 1 AUTHENTIC COST BREAKDOWN:\n\n\ud83d\udcca **API Usage Metrics:**\n\u2022 Total Reviews Processed: 1,000\n\u2022 Real API Calls Made: 8\n\u2022 Total Tokens Used: 2,914\n\u2022 Cache Hit Rate: 99.2%\n\n\ud83c\udff7\ufe0f **Actual Cost Analysis:**\n\u2022 Total Spent: $0.003849\n\u2022 Cost per Review: $0.00000385\n\u2022 Baseline (GPT-4 for all): $1.500000\n\u2022 **SAVINGS: 99.7% ($1.496150)**\n\n\ud83e\udd16 **Model Distribution:**\n\u2022 gpt-4o-mini: 37.5% (3 calls, $0.000101)\n\u2022 gpt-4o: 37.5% (3 calls, $0.003448)\n\u2022 gpt-3.5-turbo: 12.5% (1 calls, $0.000170)\n\u2022 claude-3-haiku:beta: 12.5% (1 calls, $0.000131)\n\u2022 cache_hit: 0.0% (0 calls, $0.000000)\n\n\ud83d\udcc2 **Category Performance:**\n\u2022 Books: 377 reviews, 99.2% cached, $0.000207\n\u2022 Home_and_Garden: 251 reviews, 99.2% cached, $0.000196\n\u2022 Electronics: 372 reviews, 99.2% cached, $0.003448\n\n\u2705 **Transparency Note:** These are real OpenRouter API costs from actual model calls, not simulated data.",
+  "detailed_results": [
+    {
+      "review_id": "sample_0000",
+      "category": "Books",
+      "sentiment": "Positive",
+      "model_used": "openai/gpt-4o-mini",
+      "cost": 2.6399999999999998e-05,
+      "processing_time": 3.320966958999634,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": false,
+      "tokens_used": 176,
+      "response_preview": "**Sentiment:** Positive\n\n**Quality Assessment:** The review is very brief and lacks depth. While it "
+    },
+    {
+      "review_id": "sample_0001",
+      "category": "Home_and_Garden",
+      "sentiment": "Positive",
+      "model_used": "openai/gpt-4o-mini",
+      "cost": 2.55e-05,
+      "processing_time": 1.640408992767334,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": false,
+      "tokens_used": 170,
+      "response_preview": "**Sentiment:** Positive\n\n**Quality Assessment:** The review indicates that the coffee maker function"
+    },
+    {
+      "review_id": "sample_0002",
+      "category": "Books",
+      "sentiment": "Positive",
+      "model_used": "openai/gpt-4o-mini",
+      "cost": 4.934999999999999e-05,
+      "processing_time": 2.0820298194885254,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": true,
+      "tokens_used": 329,
+      "response_preview": "**Sentiment:** Positive\n\n**Quality Assessment:** The review expresses a favorable sentiment with a r"
+    },
+    {
+      "review_id": "sample_0003",
+      "category": "Electronics",
+      "sentiment": "Neutral",
+      "model_used": "openai/gpt-4o",
+      "cost": 0.0004925,
+      "processing_time": 2.9063570499420166,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": false,
+      "tokens_used": 197,
+      "response_preview": "Sentiment: Neutral\n\nQuality Assessment: The review highlights a mixed experience with the Wireless H"
+    },
+    {
+      "review_id": "sample_0004",
+      "category": "Home_and_Garden",
+      "sentiment": "Positive",
+      "model_used": "openai/gpt-3.5-turbo",
+      "cost": 0.00017,
+      "processing_time": 1.1459641456604004,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": true,
+      "tokens_used": 340,
+      "response_preview": "**Sentiment:** Positive\n\n**Quality Assessment:** The review highlights the durability of the garden "
+    },
+    {
+      "review_id": "sample_0005",
+      "category": "Books",
+      "sentiment": "Positive",
+      "model_used": "anthropic/claude-3-haiku:beta",
+      "cost": 0.00013075,
+      "processing_time": 1.3207769393920898,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": true,
+      "tokens_used": 523,
+      "response_preview": "**Sentiment:** Mostly Positive\n\n**Quality Assessment:** This review provides a more detailed and bal"
+    },
+    {
+      "review_id": "sample_0006",
+      "category": "Electronics",
+      "sentiment": "Positive",
+      "model_used": "openai/gpt-4o",
+      "cost": 0.00116,
+      "processing_time": 2.9970359802246094,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": true,
+      "tokens_used": 464,
+      "response_preview": "Sentiment: Positive\n\nQuality Assessment: The review provides a comprehensive and highly favorable as"
+    },
+    {
+      "review_id": "sample_0007",
+      "category": "Electronics",
+      "sentiment": "Positive",
+      "model_used": "openai/gpt-4o",
+      "cost": 0.001795,
+      "processing_time": 1.9632210731506348,
+      "semantic_cache_hit": false,
+      "kv_cache_hit": true,
+      "tokens_used": 718,
+      "response_preview": "Sentiment: Positive\n\nQuality Assessment: The review provides a strong endorsement of the Flagship Sm"
+    },
+    {
+      "review_id": "sample_0008",
+      "category": "Books",
+      "sentiment": "Positive",
+      "model_used": "semantic_cache",
+      "cost": 0.0,
+      "processing_time": 5.793571472167969e-05,
+      "semantic_cache_hit": true,
+      "kv_cache_hit": false,
+      "tokens_used": 0
+    },
+    {
+      "review_id": "sample_0009",
+      "category": "Home_and_Garden",
+      "sentiment": "Positive",
+      "model_used": "semantic_cache",
+      "cost": 0.0,
+      "processing_time": 5.1975250244140625e-05,
+      "semantic_cache_hit": true,
+      "kv_cache_hit": false,
+      "tokens_used": 0
+    }
+  ]
+}

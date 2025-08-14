@@ -83,10 +83,19 @@ class AmazonDataLoader:
     def _generate_sample_data(self, sample_size: int) -> List[Dict]:
         """Generate realistic sample data when dataset isn't available"""
         sample_reviews = [
-            {"review_text": "This laptop is amazing! Fast processor, great screen quality, and the battery lasts all day. Perfect for work and gaming.", "rating": 5, "category": "Electronics", "product_title": "Gaming Laptop Pro 15", "review_id": "B001"},
-            {"review_text": "The wireless headphones have excellent sound quality but the battery dies too quickly. Good for the price but could be better.", "rating": 3, "category": "Electronics", "product_title": "Wireless Headphones X1", "review_id": "B002"},
-            {"review_text": "Great book! The characters are well-developed and the plot keeps you engaged from start to finish.", "rating": 5, "category": "Books", "product_title": "Adventure Novel", "review_id": "B003"},
-            {"review_text": "Coffee maker works well but the setup was confusing. Makes good coffee once you figure it out.", "rating": 4, "category": "Home_and_Garden", "product_title": "Coffee Maker Pro", "review_id": "B004"},
+            # Short, simple reviews (will use gpt-4o-mini)
+            {"review_text": "Great book! Easy read.", "rating": 5, "category": "Books", "product_title": "Romance Novel", "review_id": "B001"},
+            {"review_text": "Coffee maker works well.", "rating": 4, "category": "Home_and_Garden", "product_title": "Coffee Maker", "review_id": "B002"},
+            {"review_text": "Good value for money.", "rating": 4, "category": "Books", "product_title": "Self Help Book", "review_id": "B003"},
+            
+            # Medium complexity reviews (will use claude-haiku or gpt-3.5-turbo)
+            {"review_text": "The wireless headphones have excellent sound quality but the battery dies too quickly. Good for the price but could be better overall.", "rating": 3, "category": "Electronics", "product_title": "Wireless Headphones X1", "review_id": "B004"},
+            {"review_text": "This garden hose is durable and has good water pressure. The nozzle attachments are useful for different watering needs.", "rating": 4, "category": "Home_and_Garden", "product_title": "Garden Hose Kit", "review_id": "B005"},
+            {"review_text": "The story was engaging and the characters well-developed. Some parts dragged but overall worth reading.", "rating": 4, "category": "Books", "product_title": "Mystery Novel", "review_id": "B006"},
+            
+            # Complex reviews (will use gpt-4o or claude-sonnet)
+            {"review_text": "This laptop is amazing! The Intel i7 processor handles multitasking effortlessly, the 4K OLED display has incredible color accuracy for photo editing, and the battery actually lasts 8+ hours with moderate usage. The build quality feels premium with the aluminum chassis, and the keyboard has great tactile feedback. Only minor issue is the fan can get loud under heavy load, but thermal management is excellent overall. Perfect for both work and gaming - ran Cyberpunk 2077 at high settings without issues. The Thunderbolt 4 ports are convenient for my external monitors. Highly recommend for professionals.", "rating": 5, "category": "Electronics", "product_title": "Gaming Laptop Pro 15", "review_id": "B007"},
+            {"review_text": "This smartphone has excellent camera capabilities with computational photography features that rival DSLR quality in good lighting. The 120Hz OLED display is incredibly smooth and bright. Battery life easily gets through a full day of heavy usage. The build quality with Gorilla Glass Victus and IP68 rating feels premium. Processing power from the Snapdragon 8 Gen 2 handles everything I throw at it. Only complaints are the lack of headphone jack and the camera bump makes it wobble on tables. Software updates have been consistent. Great upgrade from my previous phone.", "rating": 4, "category": "Electronics", "product_title": "Flagship Smartphone", "review_id": "B008"},
         ]
         
         # Expand to requested size
@@ -140,22 +149,30 @@ class ModelRouter:
     """Smart model routing for cost optimization"""
     
     def __init__(self):
+        # Actual API pricing per million tokens (as of 2024)
         self.model_costs = {
-            'claude-haiku': 0.25,    # Cheap for simple analysis
-            'claude-sonnet': 3.0,    # Expensive for complex analysis
-            'gpt-3.5-turbo': 1.5,    # Medium cost
+            'claude-haiku': 0.25,      # $0.25 per million input tokens
+            'claude-sonnet': 3.00,     # $3.00 per million input tokens  
+            'gpt-3.5-turbo': 0.50,     # $0.50 per million input tokens
+            'gpt-4o-mini': 0.15,       # $0.15 per million input tokens (cheapest)
+            'gpt-4o': 2.50,            # $2.50 per million input tokens
+            'gpt-4-turbo': 10.00,      # $10.00 per million input tokens
         }
         
     def route_request(self, review_text: str, category: str) -> str:
         text_length = len(review_text)
         
-        # Route based on complexity
-        if text_length < 150 and category == "Books":
-            return 'claude-haiku'  # Simple sentiment for books
-        elif text_length > 400 or category == "Electronics":
-            return 'claude-sonnet'  # Detailed analysis for electronics
+        # Smart routing based on complexity and domain requirements
+        if text_length < 100 and category in ["Books", "Home_and_Garden"]:
+            return 'gpt-4o-mini'  # Cheapest for simple sentiment
+        elif text_length < 200 and category == "Books":
+            return 'claude-haiku'  # Good for straightforward sentiment analysis
+        elif text_length > 500 or category == "Electronics":
+            return 'gpt-4o'  # GPT-4 for complex technical analysis
+        elif category == "Electronics" and text_length > 300:
+            return 'claude-sonnet'  # Technical expertise for electronics
         else:
-            return 'gpt-3.5-turbo'  # Default
+            return 'gpt-3.5-turbo'  # Default for medium complexity
     
     def get_cost_per_token(self, model: str) -> float:
         return self.model_costs.get(model, 1.0) / 1_000_000
@@ -319,8 +336,11 @@ class AmazonReviewAnalyzer:
         """Generate optimization report"""
         metrics = self.cost_tracker.get_metrics()
         
-        # Calculate savings vs baseline (GPT-4)
-        baseline_cost_per_request = 0.006  # $6 per 1000 requests
+        # Calculate savings vs baseline (GPT-4 Turbo for all requests)
+        # Assuming average 150 tokens per review at $10 per million tokens
+        baseline_tokens_per_request = 150
+        baseline_cost_per_token = 10.00 / 1_000_000  # GPT-4 Turbo pricing
+        baseline_cost_per_request = baseline_tokens_per_request * baseline_cost_per_token
         baseline_cost = metrics['total_requests'] * baseline_cost_per_request
         actual_cost = metrics['total_cost']
         savings = baseline_cost - actual_cost
@@ -345,8 +365,20 @@ async def main():
     
     analyzer = AmazonReviewAnalyzer()
     
-    # Load real Amazon data
-    amazon_reviews = analyzer.data_loader.load_sample_data("Electronics", sample_size=10)
+    # Load Amazon data - scale to Week 1 target
+    print("📦 Loading Amazon review data for Week 1 analysis...")
+    
+    # Try multiple categories for comprehensive analysis
+    all_reviews = []
+    categories = ["Electronics", "Books", "Home_and_Garden"]
+    reviews_per_category = 334  # ~1000 total / 3 categories
+    
+    for category in categories:
+        category_reviews = analyzer.data_loader.load_sample_data(category, sample_size=reviews_per_category)
+        all_reviews.extend(category_reviews)
+        print(f"✅ Loaded {len(category_reviews)} {category} reviews")
+    
+    amazon_reviews = all_reviews[:1000]  # Ensure exactly 1000 for consistency
     
     print(f"📊 Processing {len(amazon_reviews)} real Amazon reviews...")
     
